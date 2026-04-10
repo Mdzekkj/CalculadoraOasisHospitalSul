@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro Médico Oasis Sul</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+
+body{
+    margin:0;
+    font-family: 'Fredoka', sans-serif;
+    color: #eaf6ff;
+    background-color: #020c17;
+    background-image: radial-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    min-height: 100vh;
+}
+
+.container{max-width:700px; margin:auto; padding:20px}
+
+h2{
+    text-align:center;
+    color: #00d4ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.card{
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    padding: 25px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+h3{ margin: 0 0 15px 0; color: #00d4ff; font-size: 1.2rem; }
+
+label{
+    font-size: 11px;
+    color: #00d4ff;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin: 10px 0 5px 5px;
+}
+
+/* Estrutura do Dropdown com Busca */
+.select-wrapper { position: relative; width: 100%; z-index: 1000; }
+
+.select-box, .search-input, input{
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    padding: 16px 20px;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    font-family: 'Fredoka', sans-serif;
+}
+
+.select-box{ cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+
+.options-container{
+    display: none;
+    background: #051626;
+    border: 1px solid #00d4ff;
+    border-radius: 14px;
+    margin-top: 5px;
+    position: absolute;
+    width: 100%;
+    z-index: 1001;
+    max-height: 350px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+}
+.options-container.open{ display: flex; flex-direction: column; }
+
+.search-input {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+}
+
+.options-list { overflow-y: auto; max-height: 300px; }
+
+.cat-label {
+    background: rgba(0, 212, 255, 0.1);
+    padding: 8px 20px;
+    font-size: 10px;
+    color: #00d4ff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.opt-item{
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: 0.2s;
+}
+.opt-item:hover{ background: rgba(0, 212, 255, 0.2); }
+
+button{ border: none; padding: 16px; border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.btn-add{ background: #007bff; color: white; width: 100%; margin-top: 15px; }
+
+.btn-success { background-color: #00c853 !important; }
+.btn-copied { background-color: #00d4ff !important; color: #020c17 !important; }
+
+.quick-kits{ display: flex; gap: 10px; margin-bottom: 15px; }
+.btn-q{
+    background: rgba(0, 212, 255, 0.1);
+    color: #00d4ff;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    flex: 1;
+    font-size: 12px;
+}
+
+.item{
+    background: rgba(255, 255, 255, 0.03);
+    padding: 18px;
+    border-radius: 18px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 6px solid #00d4ff;
+}
+
+.input-edit {
+    width: 60px !important;
+    padding: 5px !important;
+    text-align: center;
+    background: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(0,212,255,0.3) !important;
+    border-radius: 8px !important;
+    margin: 0 5px;
+}
+
+.summary{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.box{
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 212, 255, 0.1);
+    padding: 15px 5px;
+    border-radius: 15px;
+    text-align: center;
+}
+.box span{ display: block; font-size: 9px; color: #00d4ff; text-transform: uppercase; }
+.box b{ font-size: 1rem; color: #fff; }
+
+#totalBox{ border-color: #00d4ff; background: rgba(0, 212, 255, 0.05); }
+
+.actions{ display: flex; gap: 10px; margin-top: 20px; }
+.actions button{ flex: 1; }
+.btn-clear{ background: #34495e; color: #fff; }
+.btn-copy{ background: #00d4ff; color: #020c17; }
+
+.hist-item {
+    font-size: 13px;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #9ecfff;
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Centro Médico Oasis Sul</h2>
+
+    <div class="card">
+        <label>Produto</label>
+        <div class="select-wrapper">
+            <div class="select-box" onclick="toggleSelect()">
+                <span id="selected">Escolha um item...</span>
+                <span>▼</span>
+            </div>
+            <div class="options-container" id="optionsContainer">
+                <input type="text" class="search-input" id="searchInput" placeholder="Digitar nome do produto..." onkeyup="filterOptions()">
+                <div class="options-list" id="optionsList">
+                    <div class="cat-label">Principais</div>
+                    <div class="opt-item" onclick="selecionar('💖 Kit médico',1300,600)">💖 Kit médico - R$ 1.300</div>
+                    <div class="opt-item" onclick="selecionar('🦋 Bandagem',455,250)">🦋 Bandagem - R$ 455</div>
+                    <div class="opt-item" onclick="selecionar('🩹 Ataduras',585,250)">🩹 Ataduras - R$ 585</div>
+                    <div class="cat-label">Medicamentos</div>
+                    <div class="opt-item" onclick="selecionar('💉 Ritmoneury',585,350)">💉 Ritmoneury - R$ 585</div>
+                    <div class="opt-item" onclick="selecionar('🧪 Sinkalmy',520,300)">🧪 Sinkalmy - R$ 520</div>
+                    <div class="opt-item" onclick="selecionar('💊 Analgésico',65,40)">💊 Analgésico - R$ 65</div>
+                    <div class="opt-item" onclick="selecionar('🤧 Antialérgico',650,400)">🤧 Antialérgico - R$ 650</div>
+                </div>
+            </div>
+        </div>
+
+        <label style="margin-top:15px">Atalhos Kit Médico</label>
+        <div class="quick-kits">
+            <button class="btn-q" onclick="addKit(5)">+5 Unid.</button>
+            <button class="btn-q" onclick="addKit(10)">+10 Unid.</button>
+            <button class="btn-q" onclick="addKit(12)">+12 Unid.</button>
+        </div>
+
+        <label>Quantidade Manual</label>
+        <input type="number" id="qtd" value="1" min="1">
+        <button class="btn-add" id="btnAddToCart" onclick="addItem()">Adicionar ao Carrinho</button>
+    </div>
+
+    <div class="card">
+        <h3>🛒 Itens no Carrinho</h3>
+        <div id="lista"></div>
+        <div class="actions">
+            <button class="btn-clear" onclick="limpar()">Zerar</button>
+            <button class="btn-copy" id="btnFinalize" onclick="finalizarVenda(this)">Copiar Total</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📊 Resumo Total</h3>
+        <div class="summary">
+            <div class="box"><span>Itens</span><b id="qtdTotal">0</b></div>
+            <div class="box"><span>Custo</span><b id="custo">R$ 0</b></div>
+            <div class="box"><span>Lucro</span><b id="lucro">R$ 0</b></div>
+            <div class="box" id="totalBox"><span>Venda</span><b id="total">R$ 0</b></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>📜 Últimas Vendas</h3>
+        <div id="historyList"></div>
+    </div>
+</div>
+
+<script>
+let carrinho = JSON.parse(localStorage.getItem('oasis_carrinho')) || [];
+let historico = JSON.parse(localStorage.getItem('oasis_historico')) || [];
+let prodSel = null;
+
+function salvarTudo(){ 
+    localStorage.setItem('oasis_carrinho', JSON.stringify(carrinho));
+    localStorage.setItem('oasis_historico', JSON.stringify(historico));
+}
+
+function toggleSelect(){ 
+    const container = document.getElementById('optionsContainer');
+    container.classList.toggle('open');
+    if(container.classList.contains('open')) {
+        const input = document.getElementById('searchInput');
+        input.value = "";
+        filterOptions();
+        input.focus();
+    }
+}
+
+// Fechar menu se clicar fora
+window.onclick = function(e) {
+    if (!e.target.closest('.select-wrapper')) {
+        document.getElementById('optionsContainer').classList.remove('open');
+    }
+}
+
+function filterOptions(){
+    let filter = document.getElementById('searchInput').value.toLowerCase();
+    let items = document.querySelectorAll('.opt-item');
+    items.forEach(it => {
+        let text = it.innerText.toLowerCase();
+        it.style.display = text.includes(filter) ? '' : 'none';
+    });
+}
+
+function selecionar(nome, venda, custo){
+    prodSel = {nome, venda, custo};
+    document.getElementById('selected').innerText = nome;
+    document.getElementById('optionsContainer').classList.remove('open');
+}
+
+function addKit(q){
+    prodSel = {nome:'💖 Kit médico', venda:1300, custo:600};
+    document.getElementById('qtd').value = q;
+    addItem();
+}
+
+function addItem(){
+    if(!prodSel) return alert('Selecione um produto!');
+    let qtd = parseInt(document.getElementById('qtd').value);
+    let ex = carrinho.find(i => i.nome === prodSel.nome);
+    if(ex) ex.qtd += qtd;
+    else carrinho.push({...prodSel, qtd});
+    
+    salvarTudo(); 
+    render();
+
+    const btn = document.getElementById('btnAddToCart');
+    btn.innerText = "Adicionado! ✅";
+    btn.classList.add('btn-success');
+    setTimeout(() => {
+        btn.innerText = "Confirmar Venda";
+        btn.classList.remove('btn-success');
+    }, 1000);
+}
+
+function render(){
+    let lista = document.getElementById('lista');
+    lista.innerHTML = carrinho.length ? '' : '<p style="text-align:center; opacity:0.3">Carrinho vazio</p>';
+    
+    carrinho.forEach((item, i) => {
+        lista.innerHTML += `
+        <div class="item">
+            <div>
+                <div style="font-weight:700">${item.nome}</div>
+                <div style="color:#00d4ff; font-size:14px">R$ ${(item.venda * item.qtd).toLocaleString()}</div>
+            </div>
+            <div style="display:flex; gap:5px; align-items:center">
+                <button style="padding:5px 10px; background:rgba(255,255,255,0.1); color:#fff" onclick="mudar(${i},-1)">-</button>
+                <input type="number" class="input-edit" value="${item.qtd}" onchange="editarDireto(${i}, this.value)" min="1">
+                <button style="padding:5px 10px; background:rgba(255,255,255,0.1); color:#fff" onclick="mudar(${i},1)">+</button>
+                <span style="color:#ff4d4d; cursor:pointer; margin-left:10px; font-size:20px" onclick="remover(${i})">✕</span>
+            </div>
+        </div>`;
+    });
+    calc();
+    renderHist();
+}
+
+function editarDireto(i, novaQtd){
+    let q = parseInt(novaQtd);
+    if(isNaN(q) || q < 1) q = 1;
+    carrinho[i].qtd = q;
+    salvarTudo();
+    render();
+}
+
+function mudar(i, v){ 
+    if(carrinho[i].qtd + v > 0) { 
+        carrinho[i].qtd += v; 
+        salvarTudo(); 
+        render(); 
+    } 
+}
+
+function remover(i){ 
+    carrinho.splice(i, 1); 
+    salvarTudo(); 
+    render(); 
+}
+
+function calc(){
+    let t=0, c=0, q=0;
+    carrinho.forEach(i=>{ t+=i.venda*i.qtd; c+=i.custo*i.qtd; q+=i.qtd; });
+    document.getElementById('total').innerText = 'R$ ' + t.toLocaleString();
+    document.getElementById('custo').innerText = 'R$ ' + c.toLocaleString();
+    document.getElementById('lucro').innerText = 'R$ ' + (t-c).toLocaleString();
+    document.getElementById('qtdTotal').innerText = q;
+}
+
+function limpar(){ 
+    if(confirm('Zerar tudo?')){ 
+        carrinho=[]; 
+        salvarTudo(); 
+        render(); 
+    } 
+}
+
+function finalizarVenda(btn){
+    let val = document.getElementById('total').innerText.replace(/\D/g,'');
+    if(!val || val === '0') return;
+    
+    navigator.clipboard.writeText(val);
+    
+    let resumo = carrinho.map(i => `${i.qtd}x ${i.nome}`).join(', ');
+    let hora = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    historico.unshift({ hora, resumo, total: val });
+    if(historico.length > 5) historico.pop();
+    
+    carrinho = []; 
+    salvarTudo();
+    render();
+
+    btn.innerText = "Copiado! ✅";
+    btn.classList.add('btn-copied');
+    setTimeout(() => {
+        btn.innerText = "Copiar Total";
+        btn.classList.remove('btn-copied');
+    }, 1000);
+}
+
+function renderHist(){
+    let hList = document.getElementById('historyList');
+    hList.innerHTML = historico.length ? historico.map(h => `
+        <div class="hist-item">
+            <span><b>[${h.hora}]</b> ${h.resumo}</span>
+            <b style="color:#00d4ff">R$ ${parseInt(h.total).toLocaleString()}</b>
+        </div>`).join('') : '<p style="text-align:center; opacity:0.3; font-size:12px">Nenhuma venda recente.</p>';
+}
+
+render();
+</script>
+</body>
+</html>
