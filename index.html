@@ -187,14 +187,14 @@ button{ border: none; padding: 16px; border-radius: 14px; font-weight: 700; curs
                 <input type="text" class="search-input" id="searchInput" placeholder="Digitar nome do produto..." onkeyup="filterOptions()">
                 <div class="options-list" id="optionsList">
                     <div class="cat-label">Principais</div>
-                    <div class="opt-item" onclick="selecionar('💖 Kit médico',1170,0)">💖 Kit médico - R$ 1.170</div>
-                    <div class="opt-item" onclick="selecionar('🦋 Bandagem',410,0)">🦋 Bandagem - R$ 410</div>
-                    <div class="opt-item" onclick="selecionar('🩹 Gaze',530,0)">🩹 Gaze - R$ 530</div>
+                    <div class="opt-item" onclick="selecionar('💖 Kit médico',1170,660)">💖 Kit médico - R$ 1.170</div>
+                    <div class="opt-item" onclick="selecionar('🦋 Bandagem',410,275)">🦋 Bandagem - R$ 410</div>
+                    <div class="opt-item" onclick="selecionar('🩹 Atadura',530,275)">🩹 Atadura - R$ 530</div>
                     <div class="cat-label">Medicamentos</div>
-                    <div class="opt-item" onclick="selecionar('💉 Ritmoneury',530,0)">💉 Ritmoneury - R$ 530</div>
-                    <div class="opt-item" onclick="selecionar('🧪 Sinkalmy',470,0)">🧪 Sinkalmy - R$ 470</div>
-                    <div class="opt-item" onclick="selecionar('💊 Analgésico',585,0)">💊 Analgésico - R$ 585</div>
-                    <div class="opt-item" onclick="selecionar('🤧 Antialérgico',585,0)">🤧 Antialérgico - R$ 585</div>
+                    <div class="opt-item" onclick="selecionar('💉 Ritmoneury',530,385)">💉 Ritmoneury - R$ 530</div>
+                    <div class="opt-item" onclick="selecionar('🧪 Sinkalmy',470,330)">🧪 Sinkalmy - R$ 470</div>
+                    <div class="opt-item" onclick="selecionar('💊 Analgésico',585,440)">💊 Analgésico - R$ 585</div>
+                    <div class="opt-item" onclick="selecionar('🤧 Antialérgico',585,440)">🤧 Antialérgico - R$ 585</div>
                 </div>
             </div>
         </div>
@@ -280,7 +280,7 @@ function selecionar(nome, venda, custo){
 }
 
 function addKit(q){
-    prodSel = {nome:'💖 Kit médico', venda:1170, custo:0};
+    prodSel = {nome:'💖 Kit médico', venda:1170, custo:660};
     document.getElementById('qtd').value = q;
     addItem();
 }
